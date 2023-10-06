@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SpotifyService } from 'src/services/spotify.service';
 
@@ -7,41 +7,46 @@ import { SpotifyService } from 'src/services/spotify.service';
   templateUrl: './artista.component.html',
   styleUrls: ['./artista.component.css']
 })
-export class ArtistaComponent {
-
+export class ArtistaComponent  {
 
   artista: any = {};
+  topTracks: any[] = [];
 
+  loadingArtist: boolean;
 
-  constructor(private router: ActivatedRoute,
-              private spotify: SpotifyService) {
+  constructor( private router: ActivatedRoute,
+        private spotify: SpotifyService) {
+
+          this.loadingArtist = true;
 
     this.router.params.subscribe( params => {
-      this.getArtista(   params['id'] );
-      this.getTopTracks( params['id'] )
-
+      this.getArtista(params['id']);
     });
-
-   };
-
-   getArtista( id: string ){
-
-    this.spotify.getArtista( id )
-    .subscribe( artista => {
-      console.log(artista);
-      this.artista = SpotifyService;
-    });
-
-   }
-
-
-   getTopTracks( id: string ) {
-    this.spotify.getTopTracks( id )
-          .subscribe( topTracks => {
-            console.log(topTracks);
-          });
-
   }
 
+  getArtista( id: string ) {
+
+    this.loadingArtist = true;
+
+    this.spotify.getArtista( id )
+      .subscribe( artista => {
+       console.log(artista);
+       this.artista = artista;
+
+       this.loadingArtist = false;
+    });
+  }
+
+  getTopTracks( id: string) {
+
+    this.spotify.getTopTracks( id )
+        .subscribe( topTracks => {
+          console.log(topTracks)
+          this.topTracks = topTracks;
+        });
+  }
 
 }
+
+
+

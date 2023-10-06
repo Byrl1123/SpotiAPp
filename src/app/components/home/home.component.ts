@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { SpotifyService } from 'src/services/spotify.service';
 
@@ -6,31 +7,28 @@ import { SpotifyService } from 'src/services/spotify.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-
-export class HomeComponent implements OnInit {
+export class HomeComponent  {
 
   nuevasCanciones: any[] = [];
-
   loading: boolean;
-
 
   constructor( private spotify: SpotifyService ) {
 
     this.loading = true;
-
-
-   this.spotify.getNewReleases()
-   .subscribe( (data: any) => {
-      console.log(data);
-     this.nuevasCanciones = data;
-     this.loading = false;
-   });
-
+    this.spotify.getNewRealeases()
+    .subscribe( (data: any) => {
+      this.nuevasCanciones = data
+      this.loading = false
+    });
 
   }
 
-  ngOnInit() {
 
-  }
+
+
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+
+
 
 }
